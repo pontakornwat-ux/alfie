@@ -108,6 +108,7 @@ impl Git {
     pub fn run(self) -> Result<Output, String> {
         let started = Instant::now();
         let mut cmd = Command::new("git");
+        crate::no_window(&mut cmd);
         cmd.current_dir(&self.repo)
             .args(["-c", "core.quotepath=false", "-c", "color.ui=false"])
             .args(&self.args)

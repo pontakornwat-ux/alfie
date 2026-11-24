@@ -56,6 +56,9 @@ const CODE_KEYS: Record<string, string> = {
   End: 'end',
 };
 
+/** On Windows, Ctrl plays the role of ⌘ ("mod"). */
+const WIN = typeof navigator !== 'undefined' && /Windows/.test(navigator.userAgent);
+
 /** Physical-key based, so `⌘⇧[` is `mod+shift+[` rather than `mod+shift+{`. */
 export function comboOf(e: KeyboardEvent): string | null {
   let key: string | undefined;
@@ -64,15 +67,15 @@ export function comboOf(e: KeyboardEvent): string | null {
   else key = CODE_KEYS[e.code];
   if (!key) return null;
   let combo = '';
-  if (e.metaKey) combo += 'mod+';
-  if (e.ctrlKey) combo += 'ctrl+';
+  if (e.metaKey || (WIN && e.ctrlKey)) combo += 'mod+';
+  if (e.ctrlKey && !WIN) combo += 'ctrl+';
   if (e.altKey) combo += 'alt+';
   if (e.shiftKey) combo += 'shift+';
   return combo + key;
 }
 
 const SYMBOLS: Record<string, string> = {
-  mod: '⌘',
+  mod: WIN ? 'Ctrl+' : '⌘',
   shift: '⇧',
   alt: '⌥',
   ctrl: '⌃',

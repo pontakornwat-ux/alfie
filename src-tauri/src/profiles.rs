@@ -138,7 +138,7 @@ pub fn match_remote<'a>(store: &'a Store, url: &str) -> Option<&'a Profile> {
 }
 
 fn origin_url(repo: &str) -> Option<String> {
-    let out = Command::new("git")
+    let out = crate::no_window(&mut Command::new("git"))
         .current_dir(repo)
         .args(["remote", "get-url", "origin"])
         .output()
@@ -230,6 +230,7 @@ pub fn test_connection(profile: &Profile, host: &str) -> Result<String, String> 
         return Err("Enter a host such as github.com".into());
     }
     let mut cmd = Command::new("ssh");
+    crate::no_window(&mut cmd);
     cmd.args(["-T", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8"]);
     let key = profile.ssh_key.trim();
     if !key.is_empty() {

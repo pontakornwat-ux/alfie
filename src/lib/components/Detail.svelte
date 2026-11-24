@@ -78,7 +78,7 @@
   function pick(e: MouseEvent, i: number, entry: FileEntry) {
     repo.focus = 'files';
     if (entry.group !== 'commit' && e.shiftKey) return repo.markRange(i);
-    if (entry.group !== 'commit' && e.metaKey) return repo.toggleMark(i);
+    if (entry.group !== 'commit' && (e.metaKey || e.ctrlKey)) return repo.toggleMark(i);
     repo.clearMarks();
     repo.fileIdx = i;
     repo.openDiff(entry);

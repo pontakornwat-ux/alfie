@@ -298,7 +298,7 @@
       if (n) index = (index - 1 + n) % n;
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      choose(items[index], e.metaKey);
+      choose(items[index], e.metaKey || e.ctrlKey);
     } else if (e.key === 'Escape') {
       e.preventDefault();
       e.stopPropagation();
@@ -341,7 +341,7 @@
             class:sel={i === index}
             data-idx={i}
             onmousemove={() => (index = i)}
-            onclick={(e) => choose(item, e.metaKey)}
+            onclick={(e) => choose(item, e.metaKey || e.ctrlKey)}
           >
             <span class="title truncate">{item.title}</span>
             {#if item.detail}<span class="detail truncate">{item.detail}</span>{/if}

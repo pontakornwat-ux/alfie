@@ -15,7 +15,7 @@ pub fn cli_path() -> Option<PathBuf> {
     if cfg!(target_os = "macos") {
         paths.extend(["/opt/homebrew/bin".into(), "/usr/local/bin".into()]);
     }
-    paths.into_iter().map(|path| path.join("gh")).find(|path| path.is_file())
+    paths.into_iter().map(|path| path.join(if cfg!(windows) { "gh.exe" } else { "gh" })).find(|path| path.is_file())
 }
 
 #[derive(Serialize)]
@@ -40,6 +40,7 @@ pub fn status(account: Option<&str>) -> Connection {
 
 fn base_command(gh: &Path) -> Command {
     let mut command = Command::new(gh);
+    crate::no_window(&mut command);
     command.env("GH_PROMPT_DISABLED", "1")
         .env("NO_COLOR", "1")
         .env_remove("GH_FORCE_TTY")

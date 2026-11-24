@@ -61,7 +61,7 @@
         close();
         break;
       default:
-        if (e.code.startsWith('Digit') && !e.metaKey) {
+        if (e.code.startsWith('Digit') && !e.metaKey && !e.ctrlKey) {
           const i = Number(e.code.slice(5)) - 1;
           if (i >= 0 && i < n) pick(i);
         } else {
